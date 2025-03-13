@@ -12,6 +12,7 @@
 
 .foodItemImg {
     width: 100%;
+    height: 180px;
     border-radius: 15px 15px 0px 0px;
 }
 
@@ -33,10 +34,6 @@
 .foodItemNameRating p {
     font-size: 20px;
     font-weight: 500;
-}
-
-.foodItemNameRating img {
-    width: 70px;
 }
 
 .foodItemDesc {
@@ -92,91 +89,3 @@
     transform: scale(0.95);
 }
 
-@media (max-width: 620px) {
-    .foodDisplayList {
-        margin-top: 50px;
-        grid-template-columns: 1fr;
-    }
-
-    .foodItem {
-        transform: scale(1.1); /* Увеличиваем карточку */
-        max-width: 90vw; /* Ограничиваем максимальную ширину */
-        margin: auto;
-    }
-
-    .foodItemInfo {
-        padding: 25px; /* Делаем отступы чуть больше */
-    }
-
-    .foodItemNameRating p {
-        font-size: 24px; /* Увеличиваем название */
-    }
-
-    .foodItemNameRating img {
-        width: 80px; /* Рейтинг больше */
-    }
-
-    .foodItemDesc {
-        font-size: 16px; /* Описание крупнее */
-    }
-
-    .foodItemPrice {
-        font-size: 26px; /* Цена заметнее */
-    }
-
-    .foodItemImg {
-        border-radius: 20px 20px 0 0; /* Закругления больше */
-    }
-
-    .foodItemImgContainer .add {
-        width: 40px; /* Увеличиваем кнопку + */
-    }
-
-    .foodItemCounter img {
-        width: 35px; /* Увеличиваем счетчик */
-    }
-}
-
-@media (max-width: 450px) {
-    .foodDisplayList {
-        grid-template-columns: 1fr;
-    }
-
-    .foodItem {
-        transform: scale(1.1); /* Увеличиваем карточку */
-        max-width: 80%; /* Ограничиваем максимальную ширину */
-        margin: auto;
-    }
-
-    .foodItemInfo {
-        padding: 25px; /* Делаем отступы чуть больше */
-    }
-
-    .foodItemNameRating p {
-        font-size: 24px; /* Увеличиваем название */
-    }
-
-    .foodItemNameRating img {
-        width: 80px; /* Рейтинг больше */
-    }
-
-    .foodItemDesc {
-        font-size: 16px; /* Описание крупнее */
-    }
-
-    .foodItemPrice {
-        font-size: 26px; /* Цена заметнее */
-    }
-
-    .foodItemImg {
-        border-radius: 20px 20px 0 0; /* Закругления больше */
-    }
-
-    .foodItemImgContainer .add {
-        width: 40px; /* Увеличиваем кнопку + */
-    }
-
-    .foodItemCounter img {
-        width: 35px; /* Увеличиваем счетчик */
-    }
-}

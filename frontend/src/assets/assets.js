@@ -10,6 +10,16 @@ import menu_5 from './menu_5.jpg'
 import menu_6 from './menu_6.jpg'
 
 
+import burger_1 from './burger_1.jpg'
+import burger_2 from './burger_2.jpg'
+import pizza_1 from './pizza_1.jpg'
+import rolli_1 from './rolli_1.webp'
+import napitok_1 from './napitok_1.jpg'
+import napitok_2 from './napitok_2.jpg'
+import napitok_3 from './napitok_3.jpg'
+import prochee_1 from './prochee_1.jpg'
+import prochee_2 from './prochee_2.jpg'
+
 
 
 import add_icon_white from './add_icon_white.png'
@@ -92,5 +102,77 @@ export const food_list = [
         price: 299,
         description: "Мясо курицы, Салат, Соус, Кусочки ананаса",
         category: "Шаурма"
+    },
+    {
+        _id: "3",
+        name: "Бургер с чипсами",
+        image: burger_1,
+        price: 249,
+        description: "Говядина, Булочки, Сыр чеддер, Салат, Помидоры, Лук, Соус, Чипсы",
+        category: "Бургеры"
+    },
+    {
+        _id: "4",
+        name: "Бургер чёрный",
+        image: burger_2,
+        price: 379,
+        description: "Булочки чёрные, Сыр чеддер, Огурцы, Салат романо, Бекон, Котлета из мраморной говядины, Соус",
+        category: "Бургеры"
+    },
+    {
+        _id: "5",
+        name: "Пицца Пепперони",
+        image: pizza_1,
+        price: 469,
+        description: "Сыр моцарелла, Сырокопченая колбаса, Перец чили, Помидоры, Орегано, Базалик, Чеснок",
+        category: "Пицца"
+    },
+    {
+        _id: "6",
+        name: "Копчёный угорь",
+        image: rolli_1,
+        price: 359,
+        description: "Угорь копчёный, Листья нори, Кунжут, Сыр, Рис",
+        category: "Роллы"
+    },
+    {
+        _id: "7",
+        name: "Милкшейк молочный",
+        image: napitok_1,
+        price: 249,
+        description: "Молоко, Мороженное, Клубника, Ванилин, Сахар",
+        category: "Напитки"
+    },
+    {
+        _id: "8",
+        name: "Lipton зелёный чай",
+        image: napitok_2,
+        price: 89,
+        description: "Холодный чай зелёный, 0.5л",
+        category: "Напитки"
+    },
+    {
+        _id: "9",
+        name: "Кола Добрый",
+        image: napitok_3,
+        price: 129,
+        description: "Добрый Кола, 1л",
+        category: "Напитки"
+    },
+    {
+        _id: "10",
+        name: "Палочки деревянные",
+        image: prochee_1,
+        price: 29,
+        description: "Палочки для суши деревянные, 1 пара",
+        category: "Прочее"
+    },
+    {
+        _id: "11",
+        name: "Соевый соус",
+        image: prochee_2,
+        price: 69,
+        description: "Соевый соус, 250г",
+        category: "Прочее"
     },
 ]
