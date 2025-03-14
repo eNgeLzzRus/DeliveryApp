@@ -12,6 +12,7 @@ import menu_6 from './menu_6.jpg'
 
 import burger_1 from './burger_1.jpg'
 import burger_2 from './burger_2.jpg'
+import burger_3 from './burger_3.webp'
 import pizza_1 from './pizza_1.jpg'
 import rolli_1 from './rolli_1.webp'
 import napitok_1 from './napitok_1.jpg'
@@ -19,7 +20,10 @@ import napitok_2 from './napitok_2.jpg'
 import napitok_3 from './napitok_3.jpg'
 import prochee_1 from './prochee_1.jpg'
 import prochee_2 from './prochee_2.jpg'
-
+import shaurma_1 from './shaurma_1.jpg'
+import shaurma_2 from './shaurma_2.jpg'
+import shaurma_3 from './shaurma_3.webp'
+import shaurma_4 from './shaurma_4.webp'
 
 
 import add_icon_white from './add_icon_white.png'
@@ -90,7 +94,7 @@ export const food_list = [
     {
         _id: "1",
         name: "Шаурма Классическая",
-        image: menu_1,
+        image: shaurma_1,
         price: 279,
         description: "Мясо курицы, Салат, Соус, Картошка фри",
         category: "Шаурма"
@@ -98,7 +102,7 @@ export const food_list = [
     {
         _id: "2",
         name: "Шаурма Гавайская",
-        image: menu_1,
+        image: shaurma_2,
         price: 299,
         description: "Мясо курицы, Салат, Соус, Кусочки ананаса",
         category: "Шаурма"
@@ -174,5 +178,29 @@ export const food_list = [
         price: 69,
         description: "Соевый соус, 250г",
         category: "Прочее"
+    },
+    {
+        _id: "12",
+        name: "Шаурма Арабская",
+        image: shaurma_3,
+        price: 319,
+        description: "Мясо курицы, Салат, Соус, Картошка фри, Омлет, Огурцы, Помидоры",
+        category: "Шаурма"
+    },
+    {
+        _id: "13",
+        name: "Шаурма Баварская",
+        image: shaurma_4,
+        price: 269,
+        description: "Мясо курицы, Салат, Соус, Огурцы, Помидоры",
+        category: "Шаурма"
+    },
+    {
+        _id: "14",
+        name: "Бургер Сырный",
+        image: burger_3,
+        price: 359,
+        description: "Морковь, Говядица, Перец, Сыр чеддер, Салат, Авокадо, Помидоры, Лук, Кинза, Перец, Лайм, Чипсы кукурузные, Соус",
+        category: "Бургеры"
     },
 ]
