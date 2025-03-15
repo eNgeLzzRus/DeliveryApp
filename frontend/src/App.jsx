@@ -6,6 +6,8 @@ import Cart from './pages/Cart/Cart'
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder'
 import Footer from './components/Footer/Footer'
 import LoginPopup from './components/LoginPopup/LoginPopup'
+import './index.css'
+import Menu from './pages/Menu/Menu'
 
 const App = () => {
 
@@ -13,18 +15,20 @@ const App = () => {
 
   return (
     <>
-    {showLogin?<LoginPopup setShowLogin={setShowLogin}/>:<></>}
-      <div className='App'>
-        <NavBar setShowLogin={setShowLogin} />
-        <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/placeOrder' element={<PlaceOrder />} />
-        </Routes>
-      </div>
-    <Footer />
+    <div className='mainDiv'>
+      {showLogin?<LoginPopup setShowLogin={setShowLogin}/>:<></>}
+        <div className='App'>
+          <NavBar setShowLogin={setShowLogin} />
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/placeOrder' element={<PlaceOrder />} />
+            <Route path='/menu' element={<Menu />} /> 
+          </Routes>
+        </div>
+      <Footer />
+    </div>
     </>
-    
   )
 }
 

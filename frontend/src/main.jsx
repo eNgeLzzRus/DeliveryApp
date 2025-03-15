@@ -4,11 +4,15 @@ import './index.css'
 import App from './App.jsx'
 import { BrowserRouter } from 'react-router-dom'
 import StoreContextProvder from './context/StoreContext.jsx'
+import { MenuProvider } from './context/menuContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <BrowserRouter>
-  <StoreContextProvder>
-    <App />
-  </StoreContextProvder>
+  <MenuProvider>
+      <StoreContextProvder>
+        <App />
+      </StoreContextProvder>
+    </MenuProvider>
   </BrowserRouter> 
+  
 )

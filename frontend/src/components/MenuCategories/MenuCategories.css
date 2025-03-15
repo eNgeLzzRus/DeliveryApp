@@ -1,0 +1,33 @@
+.menuCategories {
+    max-width: 20%;
+    margin-top: 50px;
+    display: grid;
+}
+
+.menuCategories h1 {
+    font-size: max(2vw,28px);
+    color: #262626;
+}
+
+.menuCategoriesList {
+    margin-top: 20px;
+    display: grid;
+    gap: 10px;
+    text-align: left;
+}
+
+.menuCategoriesList p {
+    font-size: max(1vw, 24px);
+    color: #2d2c2c;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.menuCategoriesList p:hover {
+    transform: translateX(10px);    
+}
+
+.menuCategoriesList .active {
+    color: black;
+    padding-left: 15px;
+}   

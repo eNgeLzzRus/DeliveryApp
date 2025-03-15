@@ -1,3 +1,32 @@
+.cleanCart {
+    display: grid;
+    text-align: center;
+}
+
+.cleanCart h1 {
+    font-size: max(3vw,48px);
+    color: #383838;
+}
+
+.cleanCart button {
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: max(1vw,24px);
+    width: max(3vw,250px);
+    padding: 10px 0px;
+    color: white;
+    background-color: red;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.cleanCart button:hover {
+    background-color: rgb(229, 0, 0);
+    color: rgb(238, 236, 236);
+}
+
 .cartRemoveItems {
     display: flex;
 }
@@ -12,6 +41,11 @@
     padding: 10px 0px;
     border-radius: 6px;
     cursor: pointer;
+}
+
+.cartRemoveItems button:hover {
+    background-color: rgb(244, 0, 0);
+    color: rgb(242, 242, 242);
 }
 
 .cart {
@@ -58,6 +92,11 @@
     cursor: pointer;
 }
 
+.cartItemsItem button:hover {
+    background-color: rgb(244, 0, 0);
+    color: rgb(242, 242, 242);
+}
+
 .cartBottom {
     margin-top: 80px;
     font-size: max(1vw, 18px);
@@ -92,6 +131,11 @@
     padding: 12px 0px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+.cartTotal button:hover {
+    color: rgb(248, 248, 248);
+    background-color: rgb(227, 82, 56);
 }
 
 .cartPromocode {
@@ -129,6 +173,41 @@
     color: white;
     border-radius: 4px; 
     cursor: pointer;
+}
+
+.cartItemsItem .add {
+    width: 35px;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.5s;
+}
+
+.cartItemsItem .add:hover {
+    transform: scale(1.1);
+}
+
+.cartCounter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px;
+    background-color: white;
+    border-radius: 50px;
+    position: static;
+}
+
+.cartCounter img {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.cartCounter img:hover {
+    transform: scale(0.95);
 }
 
 @media (max-width:1500px) {

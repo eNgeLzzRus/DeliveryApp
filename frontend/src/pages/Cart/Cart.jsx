@@ -1,17 +1,28 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import './Cart.css'
 import { StoreContext } from '../../context/StoreContext'
 import { useNavigate } from 'react-router-dom'
+import { useMenu } from '../../context/menuContext'
+import { assets } from '../../assets/assets'
 
 const Cart = () => {
 
-    const { cartItems, food_list, removeFromCart, getTotalCartAmount, clearCart, getDeliveryPrice } = useContext(StoreContext)
+    const { cartItems, addToCart, food_list, removeFromCart, getTotalCartAmount, clearCart, getDeliveryPrice } = useContext(StoreContext)
 
     const navigate = useNavigate();    
 
-  return (
+    const { updateMenu } = useMenu()
+
+  return (  
     <div className='cart'>
-      <div className='cartRemoveItems'>
+      {getTotalCartAmount() === 0 ?
+        <div className='cleanCart'>
+          <h1>Корзина пуста</h1>
+          <button onClick={() => {navigate('/Menu'), updateMenu("Меню")}}>Перейти к покупкам</button>
+        </div>
+        :
+        <div>
+          <div className='cartRemoveItems'>
         <button onClick={()=>clearCart()}>Очистить</button>
       </div>
       <div className="cartItems">
@@ -25,24 +36,28 @@ const Cart = () => {
         </div>
         <br />
         <hr />
-        {food_list.map((item, index)=>{
-          if(cartItems[item._id]>0)
-          {
-            return (
-              <div>
-                <div className="cartItemsTitle cartItemsItem">
-                  <img src={item.image} alt="" />
-                  <p>{item.name}</p>
-                  <p>{item.price} ₽</p>
-                  <p>{cartItems[item._id]}</p>
-                  <p>{item.price*cartItems[item._id]} ₽</p>
-                  <button onClick={()=>removeFromCart(item._id)} className='cross'>Удалить</button>
-                </div>
-                <hr />
-              </div>
-            )
-          }
-        })}
+        {food_list.map((item) => {
+              if (cartItems[item._id] > 0) {
+                return (
+                  <div key={item._id}>
+                    <div className='cartItemsTitle cartItemsItem'>
+                      <img src={item.image} alt={item.name} />
+                      <p>{item.name}</p>
+                      <p>{item.price} ₽</p>
+                      <div className='cartCounter'>
+                        <img onClick={() => removeFromCart(item._id)} src={assets.remove_icon_red} alt='Remove' />
+                        <span>{cartItems[item._id]}</span>
+                        <img onClick={() => addToCart(item._id)} src={assets.add_icon_green} alt='Add' />
+                      </div>
+                      <p>{item.price * cartItems[item._id]} ₽</p>
+                      <button onClick={() => removeFromCart(item._id)} className='cross'>Удалить</button>
+                    </div>
+                    <hr />
+                  </div>
+                );
+              }
+              return null;
+            })}
       </div>
       <div className="cartBottom">
         <div className="cartTotal">
@@ -55,12 +70,12 @@ const Cart = () => {
             <hr />
             <div className="cartTotalDetails">
               <p>Стоимость доставки</p>
-              <p>{getTotalCartAmount() === 0?"Нет доставки": `${getDeliveryPrice()} ₽`} </p>
+              <p>{getDeliveryPrice() === 300? `${getDeliveryPrice()} ₽` : `(${- Math.round(((300 - getDeliveryPrice()) / 300)*100)}%) ${getDeliveryPrice()} ₽`}</p>
             </div>
             <hr />
             <div className="cartTotalDetails">
               <b>Итого</b>
-              <b>{getTotalCartAmount() === 0 ? "Нет доставки" : `${getTotalCartAmount() + getDeliveryPrice()} ₽`}</b>
+              <b>{getTotalCartAmount() + getDeliveryPrice() } ₽</b>
 
             </div>
           </div>
@@ -77,7 +92,9 @@ const Cart = () => {
         </div>
       </div>
     </div>
-  )
+      }
+    </div>
+  ) 
 }
 
 export default Cart
