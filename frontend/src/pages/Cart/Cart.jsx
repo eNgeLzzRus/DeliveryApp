@@ -45,9 +45,9 @@ const Cart = () => {
                       <p>{item.name}</p>
                       <p>{item.price} ₽</p>
                       <div className='cartCounter'>
-                        <img onClick={() => removeFromCart(item._id)} src={assets.remove_icon_red} alt='Remove' />
+                        <p onClick={() => removeFromCart(item._id)} className='removeItem'>-</p>
                         <span>{cartItems[item._id]}</span>
-                        <img onClick={() => addToCart(item._id)} src={assets.add_icon_green} alt='Add' />
+                        <p onClick={() => addToCart(item._id)} className='addItem'>+</p>
                       </div>
                       <p>{item.price * cartItems[item._id]} ₽</p>
                       <button onClick={() => removeFromCart(item._id)} className='cross'>Удалить</button>

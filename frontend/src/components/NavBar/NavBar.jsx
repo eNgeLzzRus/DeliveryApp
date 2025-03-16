@@ -9,7 +9,7 @@ const NavBar = ({setShowLogin}) => {
 
     const { updateMenu, getMenu } = useMenu()
 
-    const { getTotalCartAmount, getItemsCount } = useContext(StoreContext)
+    const { getItemsCount } = useContext(StoreContext)
 
 
   return (

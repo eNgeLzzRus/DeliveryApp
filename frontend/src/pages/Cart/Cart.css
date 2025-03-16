@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 .cleanCart {
     display: grid;
     text-align: center;
@@ -199,15 +201,14 @@
     position: static;
 }
 
-.cartCounter img {
-    width: 30px;
-    height: 30px;
+.cartCounter p {
+    display: flex;
+    align-items: center;
+    color: #5b5b5b;
+    font-size: 32px;
+    font-weight: normal;
+    font-family: "Montserrat";
     cursor: pointer;
-    transition: 0.5s;
-}
-
-.cartCounter img:hover {
-    transform: scale(0.95);
 }
 
 @media (max-width:1500px) {
