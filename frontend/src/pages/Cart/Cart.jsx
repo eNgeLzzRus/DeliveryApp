@@ -7,7 +7,7 @@ import { assets } from '../../assets/assets'
 
 const Cart = () => {
 
-    const { cartItems, addToCart, food_list, removeFromCart, getTotalCartAmount, clearCart, getDeliveryPrice } = useContext(StoreContext)
+    const { cartItems, addToCart, food_list, removeFromCart, getTotalCartAmount, clearCart, getDeliveryPrice, clearItemFromCart } = useContext(StoreContext)
 
     const navigate = useNavigate();    
 
@@ -50,7 +50,7 @@ const Cart = () => {
                         <p onClick={() => addToCart(item._id)} className='addItem'>+</p>
                       </div>
                       <p>{item.price * cartItems[item._id]} ₽</p>
-                      <button onClick={() => removeFromCart(item._id)} className='cross'>Удалить</button>
+                      <button onClick={() => clearItemFromCart(item._id)} className='cross'>Удалить</button>
                     </div>
                     <hr />
                   </div>

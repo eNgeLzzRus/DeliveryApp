@@ -28,9 +28,11 @@
     color: black;
 }
 
-.loginPopupTitle img {
+.loginPopupTitle p {
     width: 16px;
     cursor: pointer;
+    font-family: "Rotonda";
+    font-weight: 500;
 }
 
 .loginPopupInputs {

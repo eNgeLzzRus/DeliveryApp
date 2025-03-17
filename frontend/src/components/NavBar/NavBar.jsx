@@ -18,8 +18,7 @@ const NavBar = ({setShowLogin}) => {
       <ul className="navBarMenu">
         <Link to='/' onClick={()=>updateMenu("Главная")} className={getMenu()==="Главная"?"active":""}>Главная</Link>
         <Link to='/menu' onClick={()=>updateMenu("Меню")} className={getMenu()==="Меню"?"active":""}>Меню</Link>
-        <a href='/#appDownload' onClick={()=>updateMenu("Приложение")} className={getMenu()==="Приложение"?"active":""}>Приложение</a>
-        <a href='/#footer' onClick={()=>updateMenu("О-нас")} className={getMenu()==="О-нас"?"active":""}>О нас</a>
+        <Link to='/aboutUs' onClick={()=>updateMenu("О-нас")} className={getMenu()==="О-нас"?"active":""}>О нас</Link>
       </ul>
       <div className="navBarRight">
         <img src={assets.search_icon} alt="" />

@@ -1,8 +1,13 @@
 import React from 'react'
 import './Footer.css'
 import { assets } from '../../assets/assets'
+import { Link } from 'react-router-dom'
+import { useMenu } from '../../context/MenuContext'
 
 const Footer = () => {
+
+  const { updateMenu } = useMenu()
+
   return (
     <div className='footer' id='footer'>
       <div className="footerContent">
@@ -18,7 +23,7 @@ const Footer = () => {
         <div className="footerContentCenter">
             <h2>КОМПАНИЯ</h2>
             <ul>
-                <li>Главная</li>
+                <li><a href='/' onClick={()=>updateMenu("Главная")}>Главная</a></li>
                 <li>О нас</li>
                 <li>Доставка</li>
                 <li>Политика конфиденциальности</li>

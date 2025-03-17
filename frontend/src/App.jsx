@@ -8,6 +8,7 @@ import Footer from './components/Footer/Footer'
 import LoginPopup from './components/LoginPopup/LoginPopup'
 import './index.css'
 import Menu from './pages/Menu/Menu'
+import AboutUs from './pages/AboutUs/AboutUs'
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false)
@@ -22,6 +23,7 @@ const App = () => {
           <Route path='/cart' element={<Cart />} />
           <Route path='/placeOrder' element={<PlaceOrder />} />
           <Route path='/menu' element={<Menu />} />
+          <Route path='/aboutUs' element={<AboutUs />} />
         </Routes>
       </div>
       <Footer />

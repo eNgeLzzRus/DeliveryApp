@@ -31,7 +31,7 @@ const LoginPopup = ({setShowLogin}) => {
       <form ref={popupRef} action="" className="loginPopupContainer">
         <div className="loginPopupTitle">
             <h2>{currState}</h2>
-            <img onClick={()=>setShowLogin(false)} src={assets.cross_icon} alt="" />
+            <p onClick={()=>setShowLogin(false)} >X</p>
         </div>
         <div className="loginPopupInputs">
             {currState==="Авторизация"?<></>:<input type="text" placeholder='Имя' required/>}
