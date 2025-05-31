@@ -1,7 +1,7 @@
 import React from 'react'
 import './Header.css'
 import { useNavigate } from 'react-router-dom'
-import { useMenu } from '../../context/menuContext'
+import { useMenu } from '../../context/MenuContext'
 
 const Header = () => {
 

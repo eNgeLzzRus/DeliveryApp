@@ -1,22 +1,50 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import './MenuCategories.css'
-import { menu_list } from '../../assets/assets'
+import { CartContext } from '../../context/CartContext'
+import { assets } from '../../assets/assets'
 
-const MenuCategories = ({category, setCategory}) => {
-  return (
-    <div>
+const MenuCategories = ({ category, setCategory }) => {
+    const { foodList } = useContext(CartContext)
+    const [categories, setCategories] = useState([])
+
+    useEffect(() => {
+            if (Array.isArray(foodList) && foodList.length > 0) {
+                const uniqueTypes = {}
+    
+                foodList.forEach(item => {
+                    const typeName = item.productType?.name || 'Прочее'
+                    if (!uniqueTypes[typeName]) {
+                        uniqueTypes[typeName] = {
+                            id: item.productType?._id || Math.random().toString(),
+                            name: typeName
+                        }
+                    }
+                })
+    
+                setCategories(Object.values(uniqueTypes))
+            }
+        }, [foodList])
+
+    return (
         <div className="menuCategories">
             <h1>Категории</h1>
             <div className="menuCategoriesList">
-                {menu_list.map((item, index)=> {
-                    return (
-                        <p onClick={()=>setCategory(prev=>prev===item.menu_name?"All":item.menu_name)} key={index} className={category===item.menu_name?"active":""}>{item.menu_name}</p>
-                    )
-                })}
+                {Object.keys(categories).length === 0 ? (
+                    <p>Нет доступных категорий</p>
+                ) : (
+                    categories.map((type) => (
+                        <div
+                            key={type.id}
+                            onClick={() => setCategory(prev => prev === type.name ? null : type.name)}
+                            className={`exploreMenuListItem ${category === type.name ? "active" : ""}`}
+                        >
+                            <p>{type.name}</p>
+                        </div>
+                    ))
+                )}
             </div>
-        </div>      
-    </div>
-  )
+        </div>
+    )
 }
 
 export default MenuCategories

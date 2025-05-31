@@ -2,14 +2,13 @@ import React, { useContext, useState } from 'react'
 import './NavBar.css'
 import  { assets } from '../../assets/assets'
 import { Link } from 'react-router-dom'
-import { StoreContext } from '../../context/StoreContext'
 import { useMenu } from '../../context/MenuContext'
+import { AccountContext } from '../../context/AccountContext'
 
 const NavBar = ({setShowLogin}) => {
 
-    const { updateMenu, getMenu } = useMenu()
-
-    const { getItemsCount } = useContext(StoreContext)
+  const { user, logout } = useContext(AccountContext)
+  const { updateMenu, getMenu } = useMenu()
 
 
   return (
@@ -23,11 +22,11 @@ const NavBar = ({setShowLogin}) => {
       <div className="navBarRight">
         <img src={assets.search_icon} alt="" />
         <div className="navBarSearchIcon" onClick={()=>updateMenu("")}>
-            <Link to='/cart'><img src={assets.basket_icon} alt="" className="" /></Link>
-            <div className={getItemsCount()===0?"":"itemCounter"}>{getItemsCount()===0?"":getItemsCount()}</div>
-        </div>
-        <button onClick={()=>setShowLogin(true)}>Авторизация</button>
+          <Link to='/cart'><img src={assets.basket_icon} alt="" className="" /></Link>
+          {/* <div className={getItemsCount()===0?"":"itemCounter"}>{getItemsCount()===0?"":getItemsCount()}</div> */}
+        <div className={"itemCounter"}></div>
       </div>
+    </div>
     </div>
   )
 }

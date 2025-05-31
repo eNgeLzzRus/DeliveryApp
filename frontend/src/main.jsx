@@ -1,18 +1,24 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
 import { BrowserRouter } from 'react-router-dom'
-import StoreContextProvder from './context/StoreContext.jsx'
-import { MenuProvider } from './context/menuContext.jsx'
+import { AccountProvider } from './context/AccountContext'
+import { CartProvider } from './context/CartContext'
+import { MenuProvider } from './context/MenuContext'
 
-createRoot(document.getElementById('root')).render(
-  <BrowserRouter>
-  <MenuProvider>
-      <StoreContextProvder>
-        <App />
-      </StoreContextProvder>
-    </MenuProvider>
-  </BrowserRouter> 
-  
+// Глобальные стили
+import './assets/css/globals.css'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <BrowserRouter>
+      <AccountProvider>
+        <CartProvider>
+          <MenuProvider>
+            <App />
+          </MenuProvider>
+        </CartProvider>
+      </AccountProvider>
+    </BrowserRouter>
+  </React.StrictMode>
 )

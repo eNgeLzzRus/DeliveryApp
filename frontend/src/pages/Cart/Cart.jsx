@@ -1,42 +1,60 @@
-import React, { useContext, useState } from 'react'
-import './Cart.css'
-import { StoreContext } from '../../context/StoreContext'
-import { useNavigate } from 'react-router-dom'
-import { useMenu } from '../../context/menuContext'
-import { assets } from '../../assets/assets'
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { CartContext } from '../../context/CartContext';
+import './Cart.css';
+import { assets } from '../../assets/assets';
 
 const Cart = () => {
+  const {
+    cartItems,
+    foodList,
+    addItemToCart,
+    clearItemFromCart,
+    decreaseItemQuantity,
+    clearCart,
+    checkout,
+    getTotalCartAmount,
+    getDeliveryPrice,
+    cartCount
+  } = useContext(CartContext);
 
-    const { cartItems, addToCart, food_list, removeFromCart, getTotalCartAmount, clearCart, getDeliveryPrice, clearItemFromCart } = useContext(StoreContext)
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();    
+  const handleCheckout = async () => {
+    const clientId = 1; // Замените на реальный ID пользователя
+    const result = await checkout(clientId);
+    if (result.success) {
+      navigate('/order-success');
+    } else {
+      alert(`Ошибка: ${result.error}`);
+    }
+  };
 
-    const { updateMenu } = useMenu()
-
-  return (  
+  return (
     <div className='cart'>
-      {getTotalCartAmount() === 0 ?
+      {cartCount === 0 ? (
         <div className='cleanCart'>
           <h1>Корзина пуста</h1>
-          <button onClick={() => {navigate('/Menu'), updateMenu("Меню")}}>Перейти к покупкам</button>
+          <button onClick={() => navigate('/menu')}>Перейти к покупкам</button>
         </div>
-        :
+      ) : (
         <div>
           <div className='cartRemoveItems'>
-        <button onClick={()=>clearCart()}>Очистить</button>
-      </div>
-      <div className="cartItems">
-        <div className="cartItemsTitle">
-          <p>Позиция меню</p>
-          <p>Наименование</p>
-          <p>Цена</p>
-          <p>Количество</p>
-          <p>Всего</p>
-          <p>Удалить</p>
-        </div>
-        <br />
-        <hr />
-        {food_list.map((item) => {
+            <button onClick={clearCart}>Очистить корзину</button>
+          </div>
+          
+          <div className="cartItems">
+            <div className="cartItemsTitle">
+              <p>Изображение</p>
+              <p>Наименование</p>
+              <p>Цена</p>
+              <p>Количество</p>
+              <p>Сумма</p>
+              <p>Удалить</p>
+            </div>
+            <hr />
+            
+            {foodList.map((item) => {
               if (cartItems[item._id] > 0) {
                 return (
                   <div key={item._id}>
@@ -45,12 +63,17 @@ const Cart = () => {
                       <p>{item.name}</p>
                       <p>{item.price} ₽</p>
                       <div className='cartCounter'>
-                        <p onClick={() => removeFromCart(item._id)} className='removeItem'>-</p>
+                        <button onClick={() => decreaseItemQuantity(item._id)}>-</button>
                         <span>{cartItems[item._id]}</span>
-                        <p onClick={() => addToCart(item._id)} className='addItem'>+</p>
+                        <button onClick={() => addItemToCart(item._id)}>+</button>
                       </div>
                       <p>{item.price * cartItems[item._id]} ₽</p>
-                      <button onClick={() => clearItemFromCart(item._id)} className='cross'>Удалить</button>
+                      <button 
+                        onClick={() => clearItemFromCart(item._id)}
+                        className='cross'
+                      >
+                        <img src={assets.cross_icon} alt="Удалить" />
+                      </button>
                     </div>
                     <hr />
                   </div>
@@ -58,43 +81,47 @@ const Cart = () => {
               }
               return null;
             })}
-      </div>
-      <div className="cartBottom">
-        <div className="cartTotal">
-          <h2>Итого</h2>
-          <div>
-            <div className="cartTotalDetails">
-              <p>Промежуточный итог</p>
-              <p>{getTotalCartAmount()} ₽</p>
-            </div>
-            <hr />
-            <div className="cartTotalDetails">
-              <p>Стоимость доставки</p>
-              <p>{getDeliveryPrice() === 300? `${getDeliveryPrice()} ₽` : `(${- Math.round(((300 - getDeliveryPrice()) / 300)*100)}%) ${getDeliveryPrice()} ₽`}</p>
-            </div>
-            <hr />
-            <div className="cartTotalDetails">
-              <b>Итого</b>
-              <b>{getTotalCartAmount() + getDeliveryPrice() } ₽</b>
+          </div>
 
+          <div className="cartBottom">
+            <div className="cartTotal">
+              <h2>Итого</h2>
+              <div>
+                <div className="cartTotalDetails">
+                  <p>Промежуточный итог</p>
+                  <p>{getTotalCartAmount()} ₽</p>
+                </div>
+                <hr />
+                <div className="cartTotalDetails">
+                  <p>Доставка</p>
+                  <p>
+                    {getDeliveryPrice() === 300 
+                      ? `${getDeliveryPrice()} ₽` 
+                      : `(${Math.round((300 - getDeliveryPrice()) / 300 * 100)}%) ${getDeliveryPrice()} ₽`
+                    }
+                  </p>
+                </div>
+                <hr />
+                <div className="cartTotalDetails">
+                  <b>Общая сумма</b>
+                  <b>{getTotalCartAmount() + getDeliveryPrice()} ₽</b>
+                </div>
+              </div>
+              <button onClick={handleCheckout}>Оформить заказ</button>
+            </div>
+
+            <div className="cartPromocode">
+              <p>Введите промокод</p>
+              <div className="cartPromocodeInput">
+                <input type="text" placeholder='Промокод' />
+                <button>Применить</button>
+              </div>
             </div>
           </div>
-          <button onClick={()=>navigate('/order')}>Перейти к оформлению</button>
         </div>
-        <div className="cartPromocode">
-          <div>
-            <p>Введите промокод</p>
-            <div className="cartPromocodeInput">
-              <input type="text" placeholder='Промокод' />
-              <button>Применить</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
-      }
-    </div>
-  ) 
-}
+  );
+};
 
-export default Cart
+export default Cart;

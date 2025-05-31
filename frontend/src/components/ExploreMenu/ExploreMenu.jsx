@@ -1,27 +1,58 @@
-import React from 'react'
-import './ExploreMenu.css'
-import { menu_list } from '../../assets/assets'
+// ExploreMenu.jsx
 
-const ExploreMenu = ({category, setCategory}) => {
-  return (
-    <div>
-      <div className='exploreMenu' id='exploreMenu'>
-        <h1>Изучите наше меню</h1>
-        <p className='exploreMenuText'>Выбирайте из огромного списка блюд любимые</p>
-        <div className="exploreMenuList">
-            {menu_list.map((item,index)=>{
-                return (
-                    <div onClick={()=>setCategory(prev=>prev===item.menu_name?"All":item.menu_name)} key={index} className='exploreMenuListItem'>
-                        <img className={category===item.menu_name?"active":""} src={item.menu_image} alt="" />
-                        <p>{item.menu_name}</p>
-                    </div>
-                )
-            })}
+import React, { useContext, useEffect, useState } from 'react'
+import './ExploreMenu.css'
+import { assets } from '../../assets/assets'
+import { CartContext } from '../../context/CartContext'
+
+const ExploreMenu = ({ category, setCategory }) => {
+    const { foodList } = useContext(CartContext)
+    const [productTypes, setProductTypes] = useState([])
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        if (Array.isArray(foodList) && foodList.length > 0) {
+            const uniqueTypes = {}
+
+            foodList.forEach(item => {
+                const typeName = item.productType?.name || 'Прочее'
+                if (!uniqueTypes[typeName]) {
+                    uniqueTypes[typeName] = {
+                        id: item.productType?._id || Math.random().toString(),
+                        name: typeName,
+                        image: item.productType?.image || getDefaultImage(typeName)
+                    }
+                }
+            })
+
+            setProductTypes(Object.values(uniqueTypes))
+            setLoading(false)
+        }
+    }, [foodList])
+
+    const getDefaultImage = (categoryName) => {
+        switch(categoryName.toLowerCase()) {
+            case 'пицца': return '/images/categories/pizza_category.jpg'
+            case 'бургер': return '/images/categories/burger_category.jpg'
+            case 'напитки': return '/images/categories/drink_category.jpg'
+            case 'шаурма': return '/images/categories/dinner_category.jpg'
+            case 'роллы': return '/images/categories/sushi_category.jpg'
+            case 'прочее': return '/images/categories/another_category.jpg'
+            default: return assets.menu_placeholder
+        }
+    }
+
+    if (loading) {
+        return <div className="exploreMenu loading">Загрузка...</div>
+    }
+
+    return (
+        <div className="exploreMenu" id="exploreMenu">
+            <h1>Изучите наше меню</h1>
+            <p className="exploreMenuText">Выбирайте из разнообразия наших блюд</p>
+            <hr />
         </div>
-        <hr />
-      </div>
-    </div>
-  )
+    )
 }
 
 export default ExploreMenu

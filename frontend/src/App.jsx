@@ -1,29 +1,31 @@
-import { useEffect, useState } from 'react'
-import { Route, Routes } from 'react-router-dom'
+// App.jsx
+import './App.css' // твой файл стилей (см. ниже)
+import React from 'react'
+import { Routes, Route } from 'react-router-dom'
+
 import NavBar from './components/NavBar/NavBar'
+import Footer from './components/Footer/Footer'
+
 import Home from './pages/Home/Home'
 import Cart from './pages/Cart/Cart'
 import PlaceOrder from './pages/PlaceOrder/PlaceOrder'
-import Footer from './components/Footer/Footer'
-import LoginPopup from './components/LoginPopup/LoginPopup'
-import './index.css'
 import Menu from './pages/Menu/Menu'
 import AboutUs from './pages/AboutUs/AboutUs'
+import AuthPage from './pages/AuthPage/AuthPage'
+import PrivateRoute from './routes/PrivateRoute'
 
 const App = () => {
-  const [showLogin, setShowLogin] = useState(false)
-
   return (
     <div className='mainDiv'>
-      {showLogin ? <LoginPopup setShowLogin={setShowLogin} /> : null}
       <div className='App'>
-        <NavBar setShowLogin={setShowLogin} />
+        <NavBar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/cart' element={<Cart />} />
-          <Route path='/placeOrder' element={<PlaceOrder />} />
-          <Route path='/menu' element={<Menu />} />
-          <Route path='/aboutUs' element={<AboutUs />} />
+          <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+          <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
+          <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+          <Route path="/placeOrder" element={<PrivateRoute><PlaceOrder /></PrivateRoute>} />
+          <Route path="/aboutUs" element={<PrivateRoute><AboutUs /></PrivateRoute>} />
+          <Route path="/auth" element={<AuthPage />} />
         </Routes>
       </div>
       <Footer />

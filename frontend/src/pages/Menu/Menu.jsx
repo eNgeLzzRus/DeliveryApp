@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import './Menu.css'
-import { menu_list } from '../../assets/assets'
 import MenuCategories from '../../components/MenuCategories/MenuCategories'
 import FoodMenu from '../../components/FoodMenu/FoodMenu'
 

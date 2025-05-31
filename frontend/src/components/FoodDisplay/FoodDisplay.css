@@ -1,17 +1,58 @@
 .foodDisplay {
-    margin-top: 30px;
+    margin: 0 auto; /* Центрирование по горизонтали */
+    padding: 20px;
+    max-width: calc(220px * 5 + 30px * 4); /* Ширина 5 элементов с отступами */
+    width: 100%;
 }
 
 .foodDisplay h2 {
-    font-size: max(2vw,24px);
-    font-weight: 600;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+    color: #262626;
+    text-align: center; /* Центрируем заголовок */
 }
 
 .foodDisplayList {
     display: grid;
-    grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
-    margin-top: 30px;
+    grid-template-columns: repeat(5, minmax(220px, 1fr)); /* Фиксировано 5 колонок */
     gap: 30px;
     row-gap: 50px;
+    justify-content: center; /* Дополнительное центрирование */
 }
 
+/* Адаптация для меньших экранов */
+@media (max-width: 1300px) {
+    .foodDisplayList {
+        grid-template-columns: repeat(4, minmax(220px, 1fr)); /* 4 колонки */
+    }
+    .foodDisplay {
+        max-width: calc(220px * 4 + 30px * 3);
+    }
+}
+
+@media (max-width: 1000px) {
+    .foodDisplayList {
+        grid-template-columns: repeat(3, minmax(220px, 1fr)); /* 3 колонки */
+    }
+    .foodDisplay {
+        max-width: calc(220px * 3 + 30px * 2);
+    }
+}
+
+@media (max-width: 768px) {
+    .foodDisplayList {
+        grid-template-columns: repeat(2, minmax(220px, 1fr)); /* 2 колонки */
+    }
+    .foodDisplay {
+        max-width: calc(220px * 2 + 30px * 1);
+    }
+}
+
+@media (max-width: 480px) {
+    .foodDisplayList {
+        grid-template-columns: 1fr; /* 1 колонка на мобильных */
+    }
+    .foodDisplay {
+        max-width: 220px;
+    }
+}
