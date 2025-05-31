@@ -1,106 +1,82 @@
+// src/pages/AuthPage.jsx
+
 import React, { useState, useContext } from 'react'
+import './AuthPage.css'
 import { useNavigate } from 'react-router-dom'
 import api from '../../api'
 import { AccountContext } from '../../context/AccountContext'
-import './AuthPage.css'
+import { CartContext } from '../../context/CartContext'
 
 const AuthPage = () => {
     const { login } = useContext(AccountContext)
-    const [isLogin, setIsLogin] = useState(true)
-    const [formData, setFormData] = useState({ 
-        login: '', 
-        password: '' 
-    })
-    const [error, setError] = useState('')
-    const [isLoading, setIsLoading] = useState(false)
+    const {userId, setUserId} = useContext(CartContext)
+    const [currState, setCurrState] = useState("Авторизация")
+    const [formData, setFormData] = useState({ login: '', password: '' })
     const navigate = useNavigate()
+
+    const handleChange = (e) => {
+        const { name, value } = e.target
+        setFormData((prev) => ({ ...prev, [name]: value }))
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        setError('')
-        setIsLoading(true)
+        const url = currState === "Авторизация" ? '/accounts/login' : '/accounts/register'
 
         try {
-            const endpoint = isLogin ? '/accounts/login' : '/accounts/register'
-            const response = await api.post(endpoint, formData)
-            
-            console.log('Server response:', response.data) // Логирование ответа
-            
-            if (isLogin) {
-                if (response.data.token) {
-                    const success = await login(response.data.token)
-                    if (!success) {
-                        setError('Ошибка сохранения авторизации')
-                    }
+            const res = await api.post(url, {
+                login: formData.login,
+                password: formData.password
+            })
+
+            if (res.status === 200 || res.status === 201) {
+                if (currState === "Авторизация") {
+                    const { token, id } = res.data
+                    login({ token, id }) // Теперь login сам установит userId
+                    navigate('/')
                 } else {
-                    setError('Сервер не вернул токен')
+                    alert('Аккаунт создан!')
+                    setCurrState("Авторизация")
                 }
-            } else {
-                alert('Регистрация успешна! Теперь вы можете войти')
-                setIsLogin(true)
-                setFormData({ login: '', password: '' })
             }
         } catch (err) {
-            const errorMsg = err.response?.data?.error || 
-                            err.message || 
-                            'Ошибка соединения'
-            setError(errorMsg)
-            console.error('Auth error:', err)
-        } finally {
-            setIsLoading(false)
+            const errorMessage = err.response?.data?.error || 'Ошибка сервера'
+            alert(errorMessage)
         }
     }
 
     return (
-        <div className="auth-page">
-            <div className="auth-container">
-                <h2 className="auth-title">{isLogin ? 'Вход' : 'Регистрация'}</h2>
-                
-                {error && <div className="auth-error">{error}</div>}
-                
-                <form onSubmit={handleSubmit} className="auth-form">
-                    <div className="auth-input-group">
-                        <input
-                            type="text"
-                            name="login"
-                            className="auth-input"
-                            value={formData.login}
-                            onChange={(e) => setFormData({...formData, login: e.target.value})}
-                            placeholder="Логин"
-                            required
-                            disabled={isLoading}
-                        />
-                    </div>
-                    
-                    <div className="auth-input-group">
-                        <input
-                            type="password"
-                            name="password"
-                            className="auth-input"
-                            value={formData.password}
-                            onChange={(e) => setFormData({...formData, password: e.target.value})}
-                            placeholder="Пароль"
-                            required
-                            disabled={isLoading}
-                        />
-                    </div>
-                    
-                    <button 
-                        type="submit" 
-                        className="auth-button"
-                        disabled={isLoading}
-                    >
-                        {isLoading ? 'Обработка...' : isLogin ? 'Войти' : 'Зарегистрироваться'}
-                    </button>
-                </form>
-                
-                <p 
-                    className="auth-toggle"
-                    onClick={() => !isLoading && setIsLogin(!isLogin)}
-                >
-                    {isLogin ? 'Нет аккаунта? Зарегистрируйтесь' : 'Уже есть аккаунт? Войдите'}
+        <div className='authPage'>
+            <form onSubmit={handleSubmit} className="authContainer">
+                <h2>{currState}</h2>
+                <div className="authInputs">
+                    <input
+                        type="text"
+                        placeholder='Логин'
+                        name="login"
+                        value={formData.login}
+                        onChange={handleChange}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder='Пароль'
+                        name="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        required
+                    />
+                </div>
+                <button type="submit">
+                    {currState === "Регистрация" ? "Создать аккаунт" : "Войти"}
+                </button>
+
+                <p onClick={() => setCurrState(currState === "Авторизация" ? "Регистрация" : "Авторизация")}>
+                    {currState === "Авторизация"
+                        ? "Нет аккаунта? Зарегистрируйтесь"
+                        : "Уже есть аккаунт? Войдите"}
                 </p>
-            </div>
+            </form>
         </div>
     )
 }
