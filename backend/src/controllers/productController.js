@@ -139,3 +139,65 @@ exports.getRecommendedProducts = async (req, res) => {
 
     
 };
+
+// controllers/productController.js
+
+exports.getProductDetails = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const [rows] = await db.query(`
+            SELECT 
+                p.ProductID AS _id,
+                p.Name AS name,
+                p.Price AS price,
+                p.Description AS description,
+                p.Image AS image,
+                p.Weight AS weight,
+                p.CookingTime AS cookingTime,
+                pt.Name AS productTypeName,
+                i.IngredientID AS ingredientId,
+                i.Name AS ingredientName,
+                pi.Amount AS ingredientAmount
+            FROM PRODUCT p
+            LEFT JOIN PRODUCT_TYPE pt ON p.Product_typeID = pt.Product_typeID
+            LEFT JOIN PRODUCT_INGREDIENT pi ON p.ProductID = pi.ProductID
+            LEFT JOIN INGREDIENT i ON pi.IngredientID = i.IngredientID
+            WHERE p.ProductID = ?
+        `, [id]);
+
+        if (!rows.length) {
+            return res.status(404).json({ error: 'Товар не найден' });
+        }
+
+        // Группируем ингредиенты в массив
+        const baseProduct = {
+            _id: rows[0]._id,
+            name: rows[0].name,
+            price: rows[0].price,
+            description: rows[0].description,
+            image: rows[0].image,
+            weight: rows[0].weight || 'Не указано',
+            cookingTime: rows[0].cookingTime || 'Не указано',
+            type: rows[0].productTypeName || 'Не указано',
+            ingredients: []
+        };
+
+        // Добавляем ингредиенты
+        rows.forEach(row => {
+            if (row.ingredientId) {
+                baseProduct.ingredients.push({
+                    id: row.ingredientId,
+                    name: row.ingredientName,
+                    amount: row.ingredientAmount
+                });
+            }
+        });
+
+        res.json(baseProduct);
+
+    } catch (err) {
+        console.error('Ошибка при получении данных о товаре:', err);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+}

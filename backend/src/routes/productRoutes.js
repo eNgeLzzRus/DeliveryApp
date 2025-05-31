@@ -8,5 +8,7 @@ router.get('/', productController.getAllProducts)
 router.get('/:type', productController.getProductsByType)
 router.get('/types', productController.getAllProductTypes)
 router.get('/recommended/:id', productController.getRecommendedProducts)
+router.get('/:id/details', productController.getProductDetails); // ✅ Новый маршрут
+
 
 module.exports = router
