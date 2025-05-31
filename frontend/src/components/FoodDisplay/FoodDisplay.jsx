@@ -19,6 +19,8 @@ const FoodDisplay = ({ category }) => {
                                 description={item.description} 
                                 price={item.price} 
                                 image={item.image} 
+                                isOrdered={item.isOrdered}
+                                isPopular={item.isPopular}
                             />
                     })
                 ) : (

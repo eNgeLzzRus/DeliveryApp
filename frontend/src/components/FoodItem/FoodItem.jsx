@@ -1,10 +1,11 @@
 // FoodItem.jsx
+
 import React, { useContext } from 'react'
 import './FoodItem.css'
 import { assets } from '../../assets/assets'
 import { CartContext } from '../../context/CartContext'
 
-const FoodItem = ({ id, name, price, description, image }) => {
+const FoodItem = ({ id, name, price, description, image, isOrdered, isPopular }) => {
     const { cartItems, addItemToCart, decreaseItemQuantity } = useContext(CartContext)
 
     return (
@@ -43,7 +44,8 @@ const FoodItem = ({ id, name, price, description, image }) => {
             <div className="foodItemInfo">
                 <div className="foodItemNameRating">
                     <p>{name}</p>
-                    {price > 500 && <span className="popularBadge">Популярное</span>}
+                    {isOrdered && <span className="orderedBadge">Заказывали</span>}
+                    {!isOrdered && isPopular && <span className="popularBadge">Популярное</span>}
                 </div>
                 <p className="foodItemDesc">{description || 'Описание отсутствует'}</p>
                 <p className="foodItemPrice">{price} ₽</p>

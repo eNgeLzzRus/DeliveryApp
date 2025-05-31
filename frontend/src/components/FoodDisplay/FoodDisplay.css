@@ -14,7 +14,7 @@
 
 .foodDisplayList {
     display: grid;
-    grid-template-columns: repeat(5, minmax(220px, 1fr)); /* Фиксировано 5 колонок */
+    grid-template-columns: repeat(6, minmax(220px, 1fr)); /* Фиксировано 5 колонок */
     gap: 30px;
     row-gap: 50px;
     justify-content: center; /* Дополнительное центрирование */

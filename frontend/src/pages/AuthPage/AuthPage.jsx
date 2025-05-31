@@ -9,7 +9,6 @@ import { CartContext } from '../../context/CartContext'
 
 const AuthPage = () => {
     const { login } = useContext(AccountContext)
-    const {userId, setUserId} = useContext(CartContext)
     const [currState, setCurrState] = useState("Авторизация")
     const [formData, setFormData] = useState({ login: '', password: '' })
     const navigate = useNavigate()
@@ -31,8 +30,8 @@ const AuthPage = () => {
 
             if (res.status === 200 || res.status === 201) {
                 if (currState === "Авторизация") {
-                    const { token, id } = res.data
-                    login({ token, id }) // Теперь login сам установит userId
+                    const { token } = res.data
+                    login({ token }) // Теперь id берётся из токена
                     navigate('/')
                 } else {
                     alert('Аккаунт создан!')

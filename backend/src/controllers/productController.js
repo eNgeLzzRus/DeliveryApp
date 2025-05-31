@@ -121,12 +121,21 @@ exports.getRecommendedProducts = async (req, res) => {
                     ELSE 1 
                 END,
                 COUNT(op.OrdID) DESC
-            LIMIT 20;
+            LIMIT 24;
         `, [id]);
 
-        return res.json(rows);
+        // Добавляем флаги isPopular и isOrdered
+        const productsWithFlags = rows.map((product, index) => ({
+            ...product,
+            isOrdered: product.recommendation_type === 'user_ordered',
+            isPopular: !product.isOrdered && index < 10, // первые 10 после "заказанных"
+        }));
+
+        return res.json(productsWithFlags);
     } catch (error) {
         console.error('Ошибка при получении рекомендаций:', error);
         return res.status(500).json({ error: 'Внутренняя ошибка сервера' });
     }
-};  
+
+    
+};

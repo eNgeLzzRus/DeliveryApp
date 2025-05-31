@@ -1,5 +1,3 @@
-/* src/components/FoodItem/FoodItem.css */
-
 .foodItem {
     background-color: #fff;
     border-radius: 10px;
@@ -41,6 +39,7 @@
     border-radius: 50%;
     cursor: pointer;
     transition: transform 0.2s ease;
+    z-index: 1;
 }
 
 .add:hover {
@@ -62,6 +61,7 @@
     font-weight: bold;
     gap: 10px;
     cursor: default;
+    z-index: 1;
 }
 
 .foodItemCounter img {
@@ -85,10 +85,14 @@
 
 .foodItemNameRating {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    /* gap: 4px; */
     font-weight: bold;
-    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 5px;
+    cursor: default;
 }
 
 .foodItemNameRating p {
@@ -97,15 +101,38 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 100%;
+    max-width: 200px;
+}
+
+.popularBadge,
+.orderedBadge {
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 3px 8px;
+    border-radius: 5px;
+    color: white;
+    background-color: #ff6600; /* будет перезаписан ниже */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    align-self: flex-start;
+    white-space: nowrap;
+    cursor: default;
+    transition: all 0.2s ease;
 }
 
 .popularBadge {
     background-color: #ff6600;
-    color: white;
-    font-size: 12px;
-    padding: 3px 8px;
-    border-radius: 5px;
+}
+
+.orderedBadge {
+    background-color: #4caf50;
+}
+
+/* Добавляем чуть стилей при наведении */
+.popularBadge:hover,
+.orderedBadge:hover {
+    transform: scale(1.05);
 }
 
 .foodItemDesc {
@@ -123,6 +150,7 @@
     font-weight: bold;
     text-align: left;
     hyphens: auto;
+    cursor: default;
 }
 
 .foodItemPrice {
@@ -130,9 +158,11 @@
     color: #ff6600;
     font-weight: bold;
     text-align: end;
+    cursor: default;
 }
 
 .foodItem.recommended {
     border: 2px solid #ff6600;
     box-shadow: 0 0 8px rgba(255, 102, 0, 0.3);
 }
+

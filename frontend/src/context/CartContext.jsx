@@ -10,15 +10,14 @@ export const CartProvider = ({ children }) => {
     const [cartItems, setCartItems] = useState({})
     const [foodList, setFoodList] = useState([])
     const [recommendedList, setRecommendedList] = useState([])
-    const { userId, setUserId } = useContext(AccountContext)
 
-    
+    const { userId } = useContext(AccountContext)
+
     // Загрузка продуктов
     useEffect(() => {
         const fetchFoodList = async () => {
             try {
                 const response = await api.get('/products')
-                console.log('Полученные товары:', response.data)
                 setFoodList(response.data)
             } catch (error) {
                 console.error('Ошибка загрузки меню:', error.response?.data || error.message)
@@ -28,35 +27,26 @@ export const CartProvider = ({ children }) => {
         fetchFoodList()
     }, [])
 
+    // Загрузка рекомендаций
     useEffect(() => {
         const fetchRecommendedList = async () => {
-            console.log("userId:", userId);
+            if (!userId) {
+                setRecommendedList([])
+                return
+            }
+
             try {
-                
-                // Убедитесь, что userId существует и корректен
-                if (!userId) {
-                    console.log('UserID не определен');
-                    setRecommendedList([]);
-                    return;
-                }
-                
-                console.log('Запрашиваем рекомендации для userID:', userId);
-                
-                const response = await api.get(`/products/recommended/${userId}`);
-                
-                // Добавьте логирование полного ответа
-                console.log('Полный ответ сервера:', response); 
-                
-                setRecommendedList(response.data);
+                const response = await api.get(`/products/recommended/${userId}`)
+                setRecommendedList(response.data)
             } catch (error) {
-                console.error('❌ Ошибка при загрузке рекомендаций:', error.response?.data || error.message);
-                setRecommendedList([]);
+                console.error('Ошибка загрузки рекомендаций:', error)
+                setRecommendedList([])
             }
         }
 
-        fetchRecommendedList();
-    }, [userId]);
-
+        fetchRecommendedList()
+    }, [userId])
+    
     // Функции корзины
     const addItemToCart = (itemId) => {
         setCartItems(prev => ({
