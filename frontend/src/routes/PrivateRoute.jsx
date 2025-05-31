@@ -1,15 +1,15 @@
 import React, { useContext } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Navigate, useLocation, Outlet } from 'react-router-dom'
 import { AccountContext } from '../context/AccountContext'
 
 const PrivateRoute = ({ children }) => {
-    const { user } = useContext(AccountContext)
+    const { isAuthenticated, isLoading } = useContext(AccountContext);
 
-    if (!user) {
-        return <Navigate to="/auth" />
+    if (isLoading) {
+        return <div>Загрузка...</div>; // Можно скелетон или спиннер
     }
 
-    return children
-}
+    return isAuthenticated ? children : <Navigate to="/auth" />;
+};
 
 export default PrivateRoute

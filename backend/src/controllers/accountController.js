@@ -1,5 +1,6 @@
 const db = require('../config/db')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcrypt');
 
 exports.register = async (req, res) => {
     const { login, password } = req.body
@@ -12,28 +13,37 @@ exports.register = async (req, res) => {
     }
 }
 
+// controllers/accountController.js
 exports.login = async (req, res) => {
-    const { login, password } = req.body
-    console.log('Полученные данные:', { login, password }) // Логируем входящие данные
-    try {
-        const [account] = await db.query('SELECT * FROM ACCOUNT WHERE Login = ?', [login])
-        console.log('Результат запроса:', account) // Логируем результат запроса
-        if (!account[0]) return res.status(404).json({ error: 'Аккаунт не найден' })
+    const { login, password } = req.body;
 
-        if (account[0].Password !== password) return res.status(401).json({ error: 'Неверный пароль' })
+    if (!process.env.JWT_SECRET) {
+        return res.status(500).json({ error: "JWT_SECRET не задан" });
+    }
+
+    try {
+        const [accounts] = await db.query('SELECT * FROM ACCOUNT WHERE Login = ?', [login]);
+        if (!accounts[0]) {
+            return res.status(404).json({ error: 'Аккаунт не найден' });
+        }
+
+        const isValidPassword = await bcrypt.compare(password, accounts[0].Password);
+        if (!isValidPassword) {
+            return res.status(401).json({ error: 'Неверный пароль' });
+        }
 
         const token = jwt.sign(
-            { id: account[0].AccountID },
+            { id: accounts[0].AccountID },
             process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        )
-        console.log('Сгенерированный токен:', token) // Логируем токен
-        res.json({ token })
+            { expiresIn: '24h' }
+        );
+
+        res.json({ token, userId: accounts[0].AccountID });
     } catch (err) {
-        console.error('Ошибка при авторизации:', err) // Логируем ошибку
-        res.status(500).json({ error: err.message })
+        console.error('Login error:', err);
+        res.status(500).json({ error: 'Ошибка сервера' });
     }
-}
+};
 
 exports.getAccount = async (req, res) => {
     const { id } = req.params

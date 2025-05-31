@@ -1,62 +1,105 @@
-// context/AccountContext.jsx
+import React, { createContext, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 
-import React, { createContext, useState, useEffect, useContext } from 'react'
-import api from '../api'
-import { useNavigate } from 'react-router-dom'
-import { CartContext } from './CartContext'
-
-export const AccountContext = createContext()
+export const AccountContext = createContext();
 
 export const AccountProvider = ({ children }) => {
-    const navigate = useNavigate()
-    const [user, setUser] = useState(null)
-    const [userId, setUserId] = useState(localStorage.getItem('userId'))
-    // Убрали зависимость от CartContext
+    const navigate = useNavigate();
+    const [authState, setAuthState] = useState({
+        token: null,
+        userId: null,
+        isAuthenticated: false,
+        isLoading: true
+    });
 
+    // Проверка токена при загрузке
     useEffect(() => {
         const checkAuth = async () => {
-            const token = localStorage.getItem('token')
-            const userId = localStorage.getItem('userId') // Получаем напрямую
-            if (token) {
-                try {
-                    const res = await api.get('/accounts/profile')
-                    setUser({ ...res.data, id: userId })
-                } catch (err) {
-                    console.error('Ошибка авторизации:', err)
-                    localStorage.removeItem('token')
-                    localStorage.removeItem('userId')
-                    setUser(null)
-                }
-            }
-        }
-        checkAuth()
-    }, [])
+            const token = localStorage.getItem('token');
 
-    const login = async (userData) => {
-        const { token } = userData;
-        localStorage.setItem('token', token);
-        
-        // Декодируем токен чтобы получить id
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const id = payload.id;
-        
-        localStorage.setItem('userId', id);
-        setUser({ token, id });
-        setUserId(id); // Если нужно в CartContext
-        console.log(id)
-        navigate('/');
-    }
+            if (!token) {
+                setAuthState({
+                    token: null,
+                    userId: null,
+                    isAuthenticated: false,
+                    isLoading: false
+                });
+                return;
+            }
+
+            try {
+                const decoded = jwtDecode(token);
+                const isExpired = decoded.exp * 1000 < Date.now();
+
+                if (isExpired) {
+                    localStorage.removeItem('token');
+                    throw new Error('Token expired');
+                }
+
+                setAuthState({
+                    token,
+                    userId: decoded.id,
+                    isAuthenticated: true,
+                    isLoading: false
+                });
+            } catch (err) {
+                console.error('Auth check error:', err);
+                localStorage.removeItem('token');
+                setAuthState({
+                    token: null,
+                    userId: null,
+                    isAuthenticated: false,
+                    isLoading: false
+                });
+            }
+        };
+
+        checkAuth();
+    }, []);
+
+    const login = async (token) => {
+        try {
+            const decoded = jwtDecode(token);
+            localStorage.setItem('token', token);
+
+            setAuthState({
+                token,
+                userId: decoded.id,
+                isAuthenticated: true,
+                isLoading: false
+            });
+
+            navigate('/');
+            return { success: true };
+        } catch (err) {
+            console.error('Login error:', err);
+            logout();
+            return { success: false, error: 'Invalid token' };
+        }
+    };
 
     const logout = () => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('userId')
-        setUser(null)
-        navigate('/auth')
-    }
+        localStorage.removeItem('token');
+        setAuthState({
+            token: null,
+            userId: null,
+            isAuthenticated: false,
+            isLoading: false
+        });
+        navigate('/auth');
+    };
 
     return (
-        <AccountContext.Provider value={{ user, login, logout, userId, setUserId }}>
-            {children}
+        <AccountContext.Provider value={{
+            userId: authState.userId,
+            isAuthenticated: authState.isAuthenticated,
+            isLoading: authState.isLoading,
+            token: authState.token,
+            login,
+            logout
+        }}>
+            {!authState.isLoading && children}
         </AccountContext.Provider>
-    )
-}
+    );
+};

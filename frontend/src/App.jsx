@@ -20,12 +20,14 @@ const App = () => {
       <div className='App'>
         <NavBar />
         <Routes>
-          <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
-          <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
-          <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
-          <Route path="/placeOrder" element={<PrivateRoute><PlaceOrder /></PrivateRoute>} />
-          <Route path="/aboutUs" element={<PrivateRoute><AboutUs /></PrivateRoute>} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/" element={<PrivateRoute><Home /></PrivateRoute>} />
+            <Route path="/menu" element={<PrivateRoute><Menu /></PrivateRoute>} />
+            <Route path="/cart" element={<PrivateRoute><Cart /></PrivateRoute>} />
+            <Route path="/placeOrder" element={<PrivateRoute><PlaceOrder /></PrivateRoute>} />
+            <Route path="/aboutUs" element={<PrivateRoute><AboutUs /></PrivateRoute>} />
+          </Route>          
         </Routes>
       </div>
       <Footer />
