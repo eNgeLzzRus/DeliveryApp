@@ -19,3 +19,10 @@
     width: 95%;
   }
 }
+
+.content-hidden {
+  visibility: hidden;
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}

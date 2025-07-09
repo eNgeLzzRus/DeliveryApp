@@ -2,44 +2,69 @@ const db = require('../config/db')
 
 // controllers/orderController.js
 exports.createOrder = async (req, res) => {
-    const { clientId, products } = req.body
-
+    console.log('Create order request:', req.body);
+    const { clientId, products, promoCodeId } = req.body;
+    
     if (!Array.isArray(products) || products.length === 0) {
-        return res.status(400).json({ error: 'Не указаны продукты' })
+        console.log('No products error');
+        return res.status(400).json({ error: 'Не указаны продукты' });
     }
 
-    const productIds = products.map(p => p.productId).join(',')
-    const quantities = products.map(p => p.amount).join(',')
-
     try {
+        // Формируем строки с ID продуктов и количествами
+        const productIds = products.map(p => p.productId).join(',');
+        const quantities = products.map(p => p.amount).join(',');
+
+        console.log('Calling CreateOrderWithProducts with:', {
+            clientId,
+            productIds,
+            quantities,
+            promoCodeId: promoCodeId || null
+        });
+
         const [result] = await db.query(
-            'CALL CreateOrderWithProducts(?, ?, ?, @p_order_id)',
-            [clientId, productIds, quantities]
-        )
+            'CALL CreateOrderWithProducts(?, ?, ?, ?, @p_order_id)',
+            [clientId, productIds, quantities, promoCodeId || null]
+        );
 
-        // Получаем ID созданного заказа из OUT параметра
-        const [[{ orderId }]] = await db.query('SELECT @p_order_id AS orderId')
+        const [[{ orderId }]] = await db.query('SELECT @p_order_id AS orderId');
+        console.log('Order created with ID:', orderId);
+        res.json({ orderId: orderId });
 
-        res.json({ orderId: orderId })
     } catch (err) {
-        console.error(err)
-        res.status(500).json({ error: 'Ошибка при создании заказа' })
+        console.error('Order creation error:', err);
+        res.status(500).json({ 
+            error: 'Ошибка при создании заказа',
+            details: err.message 
+        });
     }
 }
 
 exports.getOrderById = async (req, res) => {
-    const { id } = req.params
+    const { id } = req.params;
+
     try {
-        const [order] = await db.query(`
-                SELECT o.*, s.Name as StatusName
-                FROM ORD o
-                JOIN STATUS s ON o.StatusID = s.StatusID
-                WHERE o.OrdID = ?
-            `, [id])
-        if (!order[0]) return res.status(404).json({ error: 'Заказ не найден' })
-        res.json(order[0])
-    }   catch (err) {
-        res.status(500).json({ error: err.message })
+        const [rows] = await db.query('SELECT * FROM ORDERS WHERE OrdID = ?', [id])
+        if (!rows.length) {
+            return res.status(404).json({ error: 'Заказ не найден' })
+        }
+
+        // Если нужна связь с товарами
+        const [products] = await db.query(`
+            SELECT p.Name AS ProductName, oi.Amount, p.Price
+            FROM ORD_PRODUCT oi
+            JOIN PRODUCT p ON oi.ProductID = p.ProductID
+            WHERE oi.OrdID = ?
+        `, [id])
+
+        res.json({
+            ...rows[0],
+            products
+        })
+
+    } catch (err) {
+        console.error("Ошибка получения заказа:", err)
+        res.status(500).json({ error: "Ошибка сервера" })
     }
 }
 
@@ -51,6 +76,27 @@ exports.getDiscount = async (req, res) => {
             [clientId, orderAmount]
         )
         res.json({ discount })
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
+
+exports.getOrdersByClientId = async (req, res) => {
+    const { clientId } = req.params
+    try {
+        const [orders] = await db.query(`
+            SELECT 
+                o.OrdID,
+                o.DateStamp AS Date,
+                o.Price AS TotalPrice,
+                s.Name AS StatusName
+            FROM ORD o
+            JOIN STATUS s ON o.StatusID = s.StatusID
+            WHERE o.ClientID = ?
+            ORDER BY o.DateStamp DESC
+        `, [clientId])
+        
+        res.json(orders)
     } catch (err) {
         res.status(500).json({ error: err.message })
     }

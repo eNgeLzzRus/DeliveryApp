@@ -1,0 +1,83 @@
+/* === Модальное окно === */
+.light-neon-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.light-neon-modal-content {
+  background-color: var(--light-neon-bg);
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+  position: relative;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.light-neon-order-summary {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.light-neon-order-item,
+.light-neon-order-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.light-neon-order-row.total {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+
+.light-neon-modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.light-neon-modal-confirm,
+.light-neon-modal-cancel {
+  background-color: var(--light-neon-orange);
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 10px var(--light-neon-glow);
+}
+
+.light-neon-modal-cancel {
+  background-color: var(--light-neon-gray);
+  color: var(--light-neon-text);
+  box-shadow: none;
+}
+
+.light-neon-modal-confirm:hover {
+  background-color: #e65b00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px var(--light-neon-glow);
+}
+
+.light-neon-modal-cancel:hover {
+  background-color: #ddd;
+}

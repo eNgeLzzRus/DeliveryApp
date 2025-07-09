@@ -1,23 +1,26 @@
-import React from 'react'
-import './Header.css'
-import { useNavigate } from 'react-router-dom'
-import { useMenu } from '../../context/MenuContext'
+import React, { useContext } from 'react';
+import './Header.css';
+import { useNavigate } from 'react-router-dom';
+import { MenuContext } from '../../context/MenuContext';
 
 const Header = () => {
-
-  const navigate = useNavigate()
-
-  const { updateMenu } = useMenu()
+  const navigate = useNavigate();
+  const { updateMenu } = useContext(MenuContext);
 
   return (
-    <div className='header'>
-      <div className="headerContents">
-        <h2>Закажи любимые блюда у нас</h2>
-        <p>В нашем онлайн-ресторане вы можете заказать еду на любой вкус. У нас есть фастфуд, национальные блюда, десерты и многое другое. Достаточно лишь зайти в меню и выбрать позиции, и ваши любимые блюда отправятся прямо к вам домой</p>
-        <button onClick={()=> {navigate("/menu"), updateMenu('Меню')}}>Смотреть меню</button>
+    <div className='light-neon-header'>
+      <div className="light-neon-header-contents">
+        <h2>ЗАКАЖИ ЛЮБИМЫЕ БЛЮДА У НАС</h2>
+        <p>В нашем онлайн-ресторане вы можете заказать еду на любой вкус. У нас есть фастфуд, национальные блюда, десерты и многое другое.</p>
+        <button 
+          onClick={() => { navigate("/menu"); updateMenu('Меню'); }}
+          className="light-neon-button"
+        >
+          СМОТРЕТЬ МЕНЮ
+        </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

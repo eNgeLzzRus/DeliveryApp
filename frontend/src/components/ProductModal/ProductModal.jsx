@@ -22,30 +22,30 @@ const ProductModal = ({ product, onClose }) => {
     }, [onClose]);
 
     return (
-        <div className="modal-overlay" onClick={onClose}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-                <button className="modal-close" onClick={onClose}>✕</button>
+        <div className="pm-overlay" onClick={onClose}>
+            <div className="pm-content" onClick={(e) => e.stopPropagation()}>
+                <button className="pm-close" onClick={onClose}>✕</button>
 
-                <div className="modal-body">
+                <div className="pm-body">
                     <img
                         src={`http://localhost:3001/images/products/${product.image}`}
                         alt={product.name}
-                        className="modal-image"
+                        className="pm-image"
                     />
 
-                    <div className="modal-info">
+                    <div className="pm-info">
                         <h2>{product.name}</h2>
-                        <p className="modal-description">{product.description}</p>
+                        <p className="pm-description">{product.description}</p>
 
-                        <div className="modal-details">
+                        <div className="pm-details">
                             <span>Вес: {product.weight || 'Не указано'}</span>
                             <span>Время приготовления: {product.cookingTime || 'Не указано'}</span>
                             <span>Тип: {product.type || 'Не указано'}</span>
-                            <span className="price">{product.price} ₽</span>
+                            <span className="pm-price">{product.price} ₽</span>
                         </div>
 
                         <h3>Ингредиенты:</h3>
-                        <ul className="ingredient-list">
+                        <ul className="pm-ingredient-list">
                             {product.ingredients.length > 0 ? (
                                 product.ingredients.map((ingredient) => (
                                     <li key={ingredient.id}>
@@ -57,15 +57,17 @@ const ProductModal = ({ product, onClose }) => {
                             )}
                         </ul>
 
-                        {/* Контейнер для кнопки или счётчика */}
-                        <div className="action-container">
+                        <div className="pm-action-container">
                             {!isInCart ? (
-                                <button className="add-to-cart-button" onClick={() => addItemToCart(product._id)}>
+                                <button 
+                                    className="pm-add-to-cart-button" 
+                                    onClick={() => addItemToCart(product._id)}
+                                >
                                     <img src={assets.add_icon_white} alt="Добавить" />
                                     Добавить в корзину
                                 </button>
                             ) : (
-                                <div className="foodItemCounter modal-counter">
+                                <div className="pm-foodItemCounter">
                                     <img
                                         onClick={() => decreaseItemQuantity(product._id)}
                                         src={assets.remove_icon_red}

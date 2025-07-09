@@ -1,0 +1,86 @@
+.profile-container {
+  max-width: 800px;
+  margin: 60px auto;
+  padding: 20px;
+  font-family: 'Roboto', sans-serif;
+}
+
+.profile-container h1 {
+  text-align: center;
+  color: #ff6b35;
+  margin-bottom: 20px;
+}
+
+.profile-card,
+.profile-orders {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 24px;
+  margin-bottom: 30px;
+  border: 1px solid #e0e0e0;
+  cursor: default !important;
+}
+
+.profile-card h2,
+.profile-orders h2 {
+  margin-top: 0;
+  color: #333;
+}
+
+.profile-card p {
+  margin: 8px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  flex-wrap: wrap;
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.order-item span {
+  flex: 1 1 45%;
+  min-width: 150px;
+  font-size: 15px;
+  color: #333;
+}
+
+.logout-button {
+  background-color: #ff6b35;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.logout-button:hover {
+  background-color: #ff8c5a;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
+.profile-loading,
+.profile-error {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 40px;
+  color: #ff6b35;
+}

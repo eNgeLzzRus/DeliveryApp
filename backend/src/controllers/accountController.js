@@ -66,22 +66,36 @@ exports.updatePassword = async (req, res) => {
     }
 }
 
-exports.verifyToken = (req, res, next) => {
-    const token = req.headers.authorization?.split(' ')[1]
-    if (!token) return res.status(401).json({ error: 'Токен отсутствует' })
+exports.verifyTokenMiddleware = (req, res) => {
+    const token = req.body.token || req.headers.authorization?.split(' ')[1]
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) return res.status(401).json({ error: 'Неверный токен' })
-        req.userId = decoded.id
-        next()
+    if (!token) {
+        return res.status(401).json({ isValid: false, error: 'Токен не предоставлен' })
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
+        if (err) {
+            return res.status(401).json({ isValid: false, error: 'Неверный или истекший токен' })
+        }
+
+        try {
+            // Проверяем, существует ли пользователь в базе
+            const [rows] = await db.query('SELECT * FROM ACCOUNT WHERE AccountID = ?', [decoded.id])
+            if (!rows[0]) {
+                return res.status(404).json({ isValid: false, error: 'Пользователь не найден' })
+            }
+
+            return res.json({ isValid: true, user: rows[0] })
+        } catch (dbErr) {
+            return res.status(500).json({ isValid: false, error: 'Ошибка проверки пользователя' })
+        }
     })
 }
 
 // controllers/accountController.js
 exports.getAccountProfile = async (req, res) => {
-    const accountId = req.userId
     try {
-        const [account] = await db.query('SELECT * FROM ACCOUNT WHERE AccountID = ?', [accountId])
+        const [account] = await db.query('SELECT * FROM ACCOUNT WHERE AccountID = ?', [req.userId])
         if (!account[0]) return res.status(404).json({ error: 'Аккаунт не найден' })
         res.json(account[0])
     } catch (err) {

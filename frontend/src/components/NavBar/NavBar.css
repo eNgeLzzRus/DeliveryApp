@@ -1,117 +1,215 @@
-.navBar {
-    padding: 20px 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Arial', sans-serif;
-    border-radius: 15px;
-    position: sticky;      /* 💡 Закрепляем навбар */
-    top: 5px;                /* 💡 С самого верха */
-    z-index: 1000;         /* 💡 Поверх контента */
-    margin: 0 auto;
-    border-radius: 15px;
+/* NavBarLight.css */
+:root {
+  --primary-orange: #ff6b35;
+  --primary-orange-light: #ff8c5a;
+  --primary-green: #4caf50;
+  --primary-blue: #2196f3;
+  --text-dark: #333333;
+  --text-medium: #666666;
+  --text-light: #888888;
+  --bg-light: #ffffff;
+  --card-border: #e0e0e0;
+  --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --hover-shadow: 0 8px 24px rgba(255, 107, 53, 0.2);
 }
 
-.navBar .logo {
-    width: 200px;
-    cursor: pointer;
+.light-navBar {
+  padding: 16px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-light);
+  box-shadow: var(--card-shadow);
+  font-family: 'Roboto', sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  margin: 0 auto;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
 }
 
-.navBarMenu {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-    margin: 0;
-    padding: 0;
-    color: #49557e;
-    font-size: 18px;
-    font-weight: 500;
+.light-logo {
+  width: 180px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
 }
 
-.navBarMenu li a {
-    text-decoration: none;
-    color: inherit;
-    transition: color 0.3s ease;
+.light-logo:hover {
+  transform: scale(1.03);
 }
 
-.navBarMenu li a:hover {
-    color: #ff6f61;
+.light-navBarMenu {
+  display: flex;
+  list-style: none;
+  gap: 32px;
+  margin: 0;
+  padding: 0;
+  color: var(--text-dark);
+  font-size: 17px;
+  font-weight: 500;
 }
 
-.navBar .active {
-    border-bottom: 2px solid #49557e;
-    padding-bottom: 2px;
+.light-navBarMenu li a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.3s ease;
+  padding: 8px 0;
+  position: relative;
 }
 
-.navBarRight {
-    display: flex;
-    align-items: center;
-    gap: 50px;
+.light-navBarMenu li a:hover {
+  color: var(--primary-orange);
 }
 
-.navBar button {
-    background-color: transparent;
-    font-size: 16px;
-    color: #49557e;
-    border: 1px solid tomato;
-    padding: 10px 25px;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: 0.3s;
+.light-navBarMenu li a.light-active {
+  color: var(--primary-orange);
+  font-weight: 600;
 }
 
-.navBar button:hover {
-    background-color: #fff4f2;
+.light-navBarMenu li a.light-active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-orange);
+  border-radius: 2px;
 }
 
-.itemCounter {
-    position: absolute;
-    top: -10px;
-    right: -15px;
-    min-width: 20px;
-    min-height: 20px;
-    background-color: tomato;
-    color: white;
-    border-radius: 50%;
-    font-size: 14px;
-    font-weight: bold;
-    text-align: center;
-    line-height: 20px;
-    font-family: 'Rotonda', sans-serif;
+.light-navBarRight {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.light-cartIconWrapper {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.light-cartIconWrapper:hover {
+  transform: translateY(-2px);
+}
+
+.light-cartIcon {
+  width: 26px;
+  height: auto;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.light-cartIconWrapper:hover .light-cartIcon {
+  filter: brightness(1.2);
+}
+
+.light-itemCounter {
+  position: absolute;
+  top: -8px;
+  right: -12px;
+  min-width: 20px;
+  min-height: 20px;
+  background-color: var(--primary-orange);
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+  text-align: center;
+  line-height: 20px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.light-itemCounter:not(:empty) {
+  visibility: visible;
+  opacity: 1;
+}
+
+.light-logoutButton {
+  background-color: transparent;
+  font-size: 16px;
+  color: var(--text-dark);
+  border: 1px solid var(--primary-orange);
+  padding: 8px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.light-logoutButton:hover {
+  background-color: rgba(255, 107, 53, 0.1);
+  color: var(--primary-orange);
+  box-shadow: 0 4px 12px rgba(255, 107, 53, 0.2);
+}
+
+.light-logoutButton:active {
+  transform: translateY(1px);
 }
 
 @media (max-width: 1050px) {
-    .navBar .logo {
-        width: 160px;
-    }
-    .navBarMenu {
-        gap: 25px;
-        font-size: 16px;
-    }
-    .navBar button {
-        padding: 8px 20px;
-        font-size: 15px;
-    }
+  .light-logo {
+    width: 150px;
+  }
+
+  .light-navBarMenu {
+    gap: 24px;
+    font-size: 16px;
+  }
+
+  .light-navBarRight {
+    gap: 24px;
+  }
 }
 
 @media (max-width: 920px) {
-    .navBar .logo {
-        width: 140px;
-    }
-    .navBarMenu {
-        gap: 20px;
-        font-size: 15px;
-    }
-    .navBar button {
-        padding: 7px 15px;
-        font-size: 14px;
-    }
+  .light-logo {
+    width: 130px;
+  }
+
+  .light-navBarMenu {
+    gap: 20px;
+    font-size: 15px;
+  }
+
+  .light-logoutButton {
+    padding: 6px 16px;
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 820px) {
-    .navBarMenu {
-        display: none;
-    }
+  .light-navBarMenu {
+    display: none;
+  }
+
+  .light-navBar {
+    padding: 12px 24px;
+  }
+
+  .light-navBarRight {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .light-logo {
+    width: 110px;
+  }
+
+  .light-logoutButton {
+    padding: 6px 12px;
+    font-size: 13px;
+  }
+
+  .light-cartIcon {
+    width: 22px;
+  }
 }

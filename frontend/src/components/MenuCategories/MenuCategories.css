@@ -1,51 +1,180 @@
-/* src/components/MenuCategories/MenuCategories.css */
+:root {
+    --light-neon-orange: #ff6600;
+    --light-neon-glow: rgba(255, 102, 0, 0.4);
+    --light-neon-bg: #ffffff;
+    --light-neon-text: #333333;
+    --light-neon-hover: #fff5f0;
+}
 
-.menuCategories {
+.light-neon-menu {
     position: fixed;
-    top: 150px;
-    left: 80px;
-    width: 200px;
-    max-height: 80vh;
+    margin-top: 45px;
+    left: 60px;
+    width: 280px;
+    max-height: calc(100vh - 180px);
     overflow-y: auto;
-    padding: 20px;
-    background-color: #fff;
+    padding: 0;
+    background: var(--light-neon-bg);
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     z-index: 1000;
+    font-family: 'Rajdhani', 'Arial Narrow', sans-serif;
+    border: 1px solid rgba(255, 102, 0, 0.1);
 }
 
-.menuCategories h1 {
+.light-neon-menu-header {
+    position: relative;
+    padding: 20px 20px 15px;
+}
+
+.light-neon-title {
+    margin: 0;
     font-size: 1.5rem;
-    margin-bottom: 10px;
-    color: #262626;
+    font-weight: 700;
+    color: var(--light-neon-text);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    position: relative;
 }
 
-.menuCategoriesList {
+.light-neon-underline {
+    height: 2px;
+    width: 50px;
+    background: var(--light-neon-orange);
+    margin-top: 10px;
+    box-shadow: 0 0 8px var(--light-neon-glow);
+}
+
+.light-neon-list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    padding: 0 15px 20px;
+    gap: 6px;
 }
 
-.menuCategoriesList p {
-    background-color: #f0f0f0;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.light-neon-item {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 8px;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--light-neon-text);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    z-index: 1;
+    border-radius: 6px;
 }
 
-.menuCategoriesList p:hover,
-.menuCategoriesList p.active {
-    background-color: #ff6600;
+.light-neon-item span {
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+}
+
+.light-neon-highlight {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--light-neon-hover);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+    z-index: 1;
+    opacity: 0.8;
+}
+
+.light-neon-item:hover {
+    color: var(--light-neon-orange);
+}
+
+.light-neon-item:hover .light-neon-highlight {
+    transform: scaleX(1);
+}
+
+.light-neon-item[data-hover="true"] {
+    transform: translateX(5px);
+}
+
+.light-neon-item.active {
     color: white;
+    background: var(--light-neon-orange);
+    box-shadow: 0 2px 12px var(--light-neon-glow);
 }
 
-.menuCategoriesList img {
-    width: 20px;
-    height: 20px;
-    vertical-align: middle;
+.light-neon-item.active .light-neon-highlight {
+    display: none;
+}
+
+.light-neon-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 20px;
+    gap: 15px;
+}
+
+.light-pulse {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--light-neon-orange);
+    animation: lightPulse 1.5s infinite ease-in-out;
+    box-shadow: 0 0 10px var(--light-neon-glow);
+}
+
+@keyframes lightPulse {
+    0% { transform: scale(0.9); opacity: 0.7; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.7; }
+}
+
+.light-neon-menu::-webkit-scrollbar {
+    width: 4px;
+}
+
+.light-neon-menu::-webkit-scrollbar-thumb {
+    background: var(--light-neon-orange);
+    border-radius: 2px;
+}
+
+@media (max-width: 992px) {
+    .light-neon-menu {
+        width: 240px;
+        left: 30px;
+        top: 100px;
+    }
+}
+
+@media (max-width: 768px) {
+    .light-neon-menu {
+        position: static;
+        width: calc(100% - 40px);
+        margin: 20px auto;
+        max-height: none;
+    }
+    
+    .light-neon-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .light-neon-item {
+        flex: 1 0 calc(50% - 8px);
+        justify-content: center;
+        padding: 12px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .light-neon-item[data-hover="true"] {
+        transform: translateY(-3px);
+    }
 }

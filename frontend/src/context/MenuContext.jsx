@@ -1,29 +1,30 @@
-import React, { Children, createContext, useContext, useState } from "react";
+import React, { createContext, useState, useEffect } from 'react';
 
-const MenuContext = createContext()
+export const MenuContext = createContext();
 
 export const MenuProvider = ({ children }) => {
-    const [menu, setMenu] = useState("")
+  const [menu, setMenu] = useState('Главная');
 
-    const updateMenu = (newValue) => {
-        setMenu(newValue)
+  // При монтировании компонента загружаем сохраненное меню
+  useEffect(() => {
+    const savedMenu = localStorage.getItem('currentMenu');
+    if (savedMenu) {
+      setMenu(savedMenu);
     }
+  }, []);
 
-    const getMenu = () => {
-        return menu
-    }
+  const updateMenu = (newMenu) => {
+    setMenu(newMenu);
+    localStorage.setItem('currentMenu', newMenu);
+  };
 
-    return (
-        <MenuContext.Provider value={{ 
-            menu, 
-            updateMenu, 
-            getMenu 
-            }}>
-                {children}
-        </MenuContext.Provider>
-    )    
-}
+  const getMenu = () => {
+    return menu;
+  };
 
-export const useMenu = () => {
-    return useContext(MenuContext)
-}
+  return (
+    <MenuContext.Provider value={{ menu, updateMenu, getMenu }}>
+      {children}
+    </MenuContext.Provider>
+  );
+};

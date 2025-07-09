@@ -1,46 +1,155 @@
-.authPage {
+/* AuthPage.css */
+:root {
+    --pm-orange: #ff6600;
+    --pm-glow: rgba(255, 102, 0, 0.4);
+    --pm-bg: #ffffff;
+    --pm-text: #333333;
+    --pm-hover: #fff5f0;
+    --pm-border: rgba(255, 102, 0, 0.1);
+    --pm-card-bg: #f9f9f9;
+    --pm-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Запрещаем скролл для всей страницы */
+body.auth-page-open {
+    overflow: hidden;
+    height: 100vh;
+}
+
+.pm-auth-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-color: #f5f5f5;
+    min-height: 100vh;
+    background-color: var(--pm-card-bg);
+    font-family: 'Rajdhani', 'Arial Narrow', sans-serif;
+    padding: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto; /* Внутренний скролл только если форма не помещается */
+    z-index: 1000;
 }
 
-.authContainer {
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    width: 300px;
+.pm-auth-container {
+    background: var(--pm-bg);
+    padding: 40px 50px;
+    border-radius: 15px;
+    box-shadow: var(--pm-shadow);
+    width: 100%;
+    max-width: 400px;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin: auto; /* Центрируем по вертикали */
 }
 
-.authContainer h2 {
-    margin-bottom: 20px;
-}
-
-.authInputs input {
+/* Остальные стили остаются без изменений */
+.pm-auth-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--pm-orange), var(--pm-glow));
 }
 
-.authContainer button {
-    margin-top: 15px;
+.pm-auth-header {
+    margin-bottom: 30px;
+}
+
+.pm-auth-logo {
+    max-width: 120px;
+    margin-bottom: 15px;
+}
+
+.pm-auth-header h2 {
+    font-size: 1.8rem;
+    color: var(--pm-text);
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.pm-underline {
+    height: 3px;
+    width: 60px;
+    background: var(--pm-orange);
+    margin: 0 auto;
+}
+
+.pm-auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.pm-auth-inputs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.pm-auth-inputs input {
     width: 100%;
-    padding: 10px;
-    background: #ff6600;
+    padding: 12px 15px;
+    border: 1px solid var(--pm-border);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background-color: var(--pm-card-bg);
+}
+
+.pm-auth-inputs input:focus {
+    outline: none;
+    border-color: var(--pm-orange);
+    box-shadow: 0 0 0 2px var(--pm-glow);
+}
+
+.pm-auth-button {
+    padding: 12px;
+    background: var(--pm-orange);
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 10px;
 }
 
-.authContainer p {
+.pm-auth-button:hover {
+    background: #e65c00;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 102, 0, 0.3);
+}
+
+.pm-auth-toggle {
     margin-top: 15px;
-    font-size: 14px;
-    color: #555;
+    font-size: 0.9rem;
+    color: var(--pm-text);
+    opacity: 0.8;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.pm-auth-toggle:hover {
+    color: var(--pm-orange);
+    opacity: 1;
+}
+
+@media (max-width: 480px) {
+    .pm-auth-container {
+        padding: 30px 20px;
+    }
+    
+    .pm-auth-header h2 {
+        font-size: 1.5rem;
+    }
 }

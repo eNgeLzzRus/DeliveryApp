@@ -5,7 +5,7 @@ import FoodMenu from '../../components/FoodMenu/FoodMenu'
 
 const Menu = () => {
 
-    const [category, setCategory] = useState("All")
+    const [category, setCategory] = useState(null)
 
   return (
     <div className='menuDiv'>

@@ -1,8 +1,7 @@
-// src/context/AccountContext.jsx
-
 import React, { createContext, useState, useEffect } from 'react'
 import api from '../api'
 import { useNavigate } from 'react-router-dom'
+import { jwtDecode } from 'jwt-decode'
 
 export const AccountContext = createContext()
 
@@ -12,66 +11,79 @@ export const AccountProvider = ({ children }) => {
     const [userId, setUserId] = useState(localStorage.getItem('userId') || null)
     const [loading, setLoading] = useState(true)
 
+    const verifyToken = async (token) => {
+        try {
+            const response = await api.post('/accounts/verify-token', { token })
+            return response.data.isValid
+        } catch (err) {
+            console.warn("Ошибка проверки токена на сервере:", err.message)
+            return false
+        }
+    }
+
     useEffect(() => {
         const checkAuth = async () => {
             const token = localStorage.getItem('token')
             const storedUserId = localStorage.getItem('userId')
 
-            console.log('--- Проверка токена ---')
-            console.log('Token:', token)
-            console.log('Stored userId:', storedUserId)
-
-            if (token && storedUserId) {
-                try {
-                    const payload = JSON.parse(atob(token.split('.')[1]))
-                    const idFromToken = payload.id
-
-                    // Добавим проверку exp (время жизни токена)
-                    const exp = payload.exp
-                    if (Date.now() >= exp * 1000) {
-                        console.warn('Токен истёк')
-                        logout()
-                        return
-                    }
-
-                    console.log('ID из токена:', idFromToken)
-                    console.log('Сравнение ID:', storedUserId, String(idFromToken))
-
-                    // Приводим оба к строке для корректного сравнения
-                    if (storedUserId === String(idFromToken)) {
-                        setUser({ token, id: storedUserId })
-                        setUserId(storedUserId)
-                        console.log('Авторизация успешна')
-                    } else {
-                        console.warn('ID из токена не совпадает со storedUserId. Выполняю logout.')
-                        logout()
-                    }
-                } catch (err) {
-                    console.error('Ошибка при декодировании токена:', err)
-                    logout()
-                }
-            } else {
-                console.log('Токен или userId отсутствуют')
+            if (!token || !storedUserId) {
+                setLoading(false)
+                return
             }
 
-            setLoading(false)
+            try {
+                // Декодируем токен и проверяем срок действия
+                const decoded = jwtDecode(token)
+
+                if (Date.now() >= decoded.exp * 1000) {
+                    console.warn("Токен истёк")
+                    logout()
+                    return
+                }
+
+                // Проверяем соответствие userId
+                if (storedUserId !== String(decoded.id)) {
+                    console.warn("ID пользователя не совпадает", { storedUserId, decodedId: decoded.id })
+                    logout()
+                    return
+                }
+
+                // Проверяем валидность токена на бэкенде
+                const isValid = await verifyToken(token)
+                if (!isValid) {
+                    console.warn("Токен недействителен")
+                    logout()
+                    return
+                }
+
+                setUser({ token, id: storedUserId })
+                setUserId(storedUserId)
+            } catch (err) {
+                console.error("Ошибка проверки авторизации:", err)
+                logout()
+            } finally {
+                setLoading(false)
+            }
         }
 
         checkAuth()
     }, [])
 
-    const login = (userData) => {
+    const login = async (userData) => {
         const { token } = userData
+        if (!token) {
+            console.error("Токен не получен")
+            return
+        }
+
         localStorage.setItem('token', token)
 
-        const payload = JSON.parse(atob(token.split('.')[1]))
-        const id = payload.id
-
-        // Сохраняем userId как строку, чтобы сравнение было стабильным
-        const userIdStr = String(id)
+        const decoded = jwtDecode(token)
+        const userIdStr = String(decoded.id)
         localStorage.setItem('userId', userIdStr)
-        setUserId(userIdStr)
+
         setUser({ token, id: userIdStr })
+        setUserId(userIdStr)
 
         navigate('/')
     }

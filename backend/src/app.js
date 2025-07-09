@@ -19,6 +19,7 @@ app.use(bodyParser.json())
 // Статические ресурсы — важно! Путь должен быть правильным
 app.use('/images/categories', express.static(path.join(__dirname, 'public/images/categories')))
 app.use('/images/products', express.static(path.join(__dirname, 'public/images/products')))
+app.use('/images', express.static(path.join(__dirname, 'public/images')))
 
 // Роуты
 const accountRoutes = require('./routes/accountRoutes')
@@ -26,12 +27,14 @@ const clientRoutes = require('./routes/clientRoutes')
 const courierRoutes = require('./routes/courierRoutes')
 const productRoutes = require('./routes/productRoutes')
 const orderRoutes = require('./routes/orderRoutes')
+const promoRoutes = require('./routes/promoRoutes')
 
 app.use('/api/accounts', accountRoutes)
 app.use('/api/clients', clientRoutes)
 app.use('/api/couriers', courierRoutes)
 app.use('/api/products', productRoutes)
 app.use('/api/orders', orderRoutes)
+app.use('/api/promo', promoRoutes);
 
 // Обработка 404 для API
 app.use((req, res, next) => {

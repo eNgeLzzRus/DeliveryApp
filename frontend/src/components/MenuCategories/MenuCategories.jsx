@@ -1,50 +1,80 @@
-import React, { useContext, useEffect, useState } from 'react'
-import './MenuCategories.css'
-import { CartContext } from '../../context/CartContext'
-import { assets } from '../../assets/assets'
+import React, { useContext, useEffect, useState } from 'react';
+import './MenuCategories.css';
+import { CartContext } from '../../context/CartContext';
 
 const MenuCategories = ({ category, setCategory }) => {
-    const { foodList } = useContext(CartContext)
-    const [categories, setCategories] = useState([])
+    const { foodList } = useContext(CartContext);
+    const [categories, setCategories] = useState([]);
+    const [hoveredItem, setHoveredItem] = useState(null);
 
     useEffect(() => {
-            if (Array.isArray(foodList) && foodList.length > 0) {
-                const uniqueTypes = {}
-    
-                foodList.forEach(item => {
-                    const typeName = item.productType?.name || 'Прочее'
-                    if (!uniqueTypes[typeName]) {
-                        uniqueTypes[typeName] = {
-                            id: item.productType?._id || Math.random().toString(),
-                            name: typeName
-                        }
-                    }
-                })
-    
-                setCategories(Object.values(uniqueTypes))
+        window.scrollTo(0, 0);
+        
+        if (Array.isArray(foodList) && foodList.length > 0) {
+            const uniqueTypes = {};
+            foodList.forEach(item => {
+                const typeName = item.productType?.name || 'Прочее';
+                if (!uniqueTypes[typeName]) {
+                    uniqueTypes[typeName] = {
+                        id: item.productType?._id || Math.random().toString(),
+                        name: typeName
+                    };
+                }
+            });
+            setCategories(Object.values(uniqueTypes));
+            
+            // Устанавливаем категорию "Все продукты" по умолчанию
+            // только если category еще не установлена
+            if (category === undefined) {
+                setCategory(null);
             }
-        }, [foodList])
+        }
+    }, [foodList, category, setCategory]);
 
     return (
-        <div className="menuCategories">
-            <h1>Категории</h1>
-            <div className="menuCategoriesList">
-                {Object.keys(categories).length === 0 ? (
-                    <p>Нет доступных категорий</p>
+        <div className="light-neon-menu">
+            <div className="light-neon-menu-header">
+                <h2 className="light-neon-title">КАТЕГОРИИ</h2>
+                <div className="light-neon-underline"></div>
+            </div>
+            
+            <div className="light-neon-list">
+                {categories.length === 0 ? (
+                    <div className="light-neon-loading">
+                        <div className="light-pulse"></div>
+                        <span>Загрузка категорий...</span>
+                    </div>
                 ) : (
-                    categories.map((type) => (
-                        <div
-                            key={type.id}
-                            onClick={() => setCategory(prev => prev === type.name ? null : type.name)}
-                            className={`exploreMenuListItem ${category === type.name ? "active" : ""}`}
+                    <>
+                        <button
+                            onClick={() => setCategory(null)}
+                            className={`light-neon-item ${!category ? 'active' : ''}`}
+                            onMouseEnter={() => setHoveredItem('all')}
+                            onMouseLeave={() => setHoveredItem(null)}
+                            data-hover={hoveredItem === 'all'}
                         >
-                            <p>{type.name}</p>
-                        </div>
-                    ))
+                            <span>ВСЕ ПРОДУКТЫ</span>
+                            <div className="light-neon-highlight"></div>
+                        </button>
+                        
+                        {categories.map((type) => (
+                            <button
+                                key={type.id}
+                                onClick={() => setCategory(type.name)}
+                                className={`light-neon-item ${category === type.name ? 'active' : ''}`}
+                                onMouseEnter={() => setHoveredItem(type.id)}
+                                onMouseLeave={() => setHoveredItem(null)}
+                                data-hover={hoveredItem === type.id}
+                            >
+                                <span>{type.name.toUpperCase()}</span>
+                                <div className="light-neon-highlight"></div>
+                            </button>
+                        ))}
+                    </>
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default MenuCategories
+export default MenuCategories;

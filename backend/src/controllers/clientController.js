@@ -28,3 +28,19 @@ exports.getClientById = async (req, res) => {
         res.status(500).json({ error: err.message })
     }
 }
+
+exports.getClientByAccountId = async (req, res) => {
+    const { accountId } = req.params
+    try {
+        const [client] = await db.query(`
+            SELECT c.* 
+            FROM CLIENT c
+            WHERE c.AccountID = ?
+        `, [accountId])
+        
+        if (!client[0]) return res.status(404).json({ error: 'Клиент не найден' })
+        res.json(client[0])
+    } catch (err) {
+        res.status(500).json({ error: err.message })
+    }
+}
